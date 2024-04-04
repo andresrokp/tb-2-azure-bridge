@@ -6,14 +6,14 @@ const Protocol = require('azure-iot-device-mqtt').Mqtt;
 const deviceConnectionString = process.env.DEVICE_CONNECTION_STRING;
 const client = Client.fromConnectionString(deviceConnectionString, Protocol);
 
-async function sendMessageToIotHub (req, res) {
+async function sendMessageToIotHub (req, resp) {
   messageBody = req.body;
 
   // Connect to the IoT Hub
-  await client.open(function (err) {
+  client.open(function (err) {
     if (err) {
       console.error('Could not connect: ' + err.message);
-      return res.status(500).json({ error: 'Could not connect to Azure IoT Hub' });
+      return resp.status(500);
     }
 
     console.log('Client connected to Azure IoT Hub');
@@ -27,7 +27,7 @@ async function sendMessageToIotHub (req, res) {
       if (err) {
         console.error('Error sending message: ' + err.toString());
         client.close();
-        return res.status(500).json({ error: 'Error sending message to Azure IoT Hub' });
+        return resp.sendStatus(500);
       }
 
       console.log('Message sent to Azure IoT Hub', res, messageBody);
@@ -36,10 +36,10 @@ async function sendMessageToIotHub (req, res) {
       client.close(function (err) {
         if (err) {
           console.error('Error closing connection: ' + err.message);
-          return res.status(500).json({ error: 'Error closing connection to Azure IoT Hub' });
+          return resp.sendStatus(500);
         }
         console.log('Client disconnected from Azure IoT Hub');
-        return res.status(200).json({ message: 'Message sent successfully to Azure IoT Hub' });
+        return resp.sendStatus(200);
       });
     });
   });

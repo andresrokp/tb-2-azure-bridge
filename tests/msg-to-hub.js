@@ -21,7 +21,7 @@ const messageBody = {
         { TagID: '0700EE00A0828C06', Rssi: -24, Numero: 8 },
         { TagID: '0700EE00A00729D5', Rssi: -24, Numero: 9 }
     ],
-    BodegaID: 'casabetruck1',
+    BodegaID: 'cielcentro',
     ts: Date.now(),
     Latitude: 6.9690366,
     Longitude: -73.9446799
